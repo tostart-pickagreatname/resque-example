@@ -1,2 +1,6 @@
-require './rea.rb'
-run Sinatra::Application
+require './resque-example-app.rb'
+require 'resque/server'
+
+run Rack::URLMap.new \
+  "/"       => Sinatra::Application,
+  "/resque" => Resque::Server.new

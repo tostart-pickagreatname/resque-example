@@ -2,6 +2,7 @@ source :rubygems
 
 gem 'rake'
 gem 'sinatra'
+gem 'resque'
 
 group :development, :test do
   gem 'pry'
