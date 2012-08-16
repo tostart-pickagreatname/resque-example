@@ -1,6 +1,6 @@
 require 'bundler/setup'
 Bundler.require(:default)
-require './lib/watermark'
+require File.expand_path('../lib/watermark', __FILE__)
 
 configure do
   uri = URI.parse(ENV["REDISTOGO_URL"])
