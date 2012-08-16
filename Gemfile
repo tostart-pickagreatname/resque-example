@@ -5,6 +5,7 @@ gem 'sinatra'
 gem 'resque'
 gem 'fog'
 gem 'mini_magick'
+gem 'thin'
 
 group :development, :test do
   gem 'pry'
