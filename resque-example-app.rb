@@ -12,7 +12,7 @@ post '/upload' do
     tmpfile = params['file'][:tempfile]
     name = params['file'][:filename]
     file_token = send_to_s3(tmpfile, name)
-    Resque.enqueue(Watermark, file_token)
+    Resque.enqueue(Watermark, file_token.key)
   end
 end
 

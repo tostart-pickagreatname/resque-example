@@ -2,7 +2,7 @@ class Watermark
   attr_reader :originals_directory, :watermarked_directory, :connection, :original_file
   @queue = :watermark
 
-  def initialize(file_token)
+  def initialize(key)
     @connection = Fog::Storage.new({
       :provider => 'AWS',
       :aws_access_key_id => ENV['AWS_ACCESS_KEY_ID'],
@@ -12,11 +12,11 @@ class Watermark
     @originals_directory = connection.directories.get(ENV['AWS_S3_BUCKET_ORIGINALS'])
     @watermarked_directory = connection.directories.get(ENV['AWS_S3_BUCKET_WATERMARKED'])
 
-    @original_file = @originals_directory.files.get(file_token["key"])
+    @original_file = @originals_directory.files.get(key)
   end
 
-  def self.perform(file_token)
-    (new file_token).apply_watermark
+  def self.perform(key)
+    (new key).apply_watermark
   end
 
   def apply_watermark
