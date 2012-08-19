@@ -1,6 +1,16 @@
 require File.expand_path('../redis_keys', __FILE__)
 
+module RetriedJob
+  def on_failure_retry(e, *args)
+    puts "Performing #{self} caused an exception (#{e}). Retrying..."
+    $stdout.flush
+    Resque.enqueue self, *args
+  end
+end
+
 class Watermark
+  extend RetriedJob
+
   attr_reader :originals_directory, :watermarked_directory, :connection, :original_file
   @queue = :watermark
 
@@ -50,7 +60,8 @@ class Watermark
       :body   => File.open(watermarked_local_file),
       :public => true
     )
-    puts "Persisting watermarked file to S3: #{watermarked_file_token.public_url}"
+    redis.lpush(watermarked_url_list, watermarked_file_token.public_url)
+    flush "Persisted watermarked file to S3: #{watermarked_file_token.public_url}"
   end
 
   def flush(str)
