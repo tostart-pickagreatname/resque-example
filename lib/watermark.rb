@@ -15,17 +15,20 @@ class Watermark
   @queue = :watermark
 
   def initialize(key)
-    @connection = Fog::Storage.new({
-      :provider => 'AWS',
-      :aws_access_key_id => ENV['AWS_ACCESS_KEY_ID'],
-      :aws_secret_access_key => ENV['AWS_SECRET_ACCESS_KEY']
-    })
-
+    @connection = get_connection
     @originals_directory = connection.directories.get(ENV['AWS_S3_BUCKET_ORIGINALS'])
     @watermarked_directory = connection.directories.get(ENV['AWS_S3_BUCKET_WATERMARKED'])
 
     @original_file = @originals_directory.files.get(key)
     flush "Initialized Watermark worker instance"
+  end
+
+  def get_connection
+    conn = Fog::Storage.new({
+      :provider => 'AWS',
+      :aws_access_key_id => ENV['AWS_ACCESS_KEY_ID'],
+      :aws_secret_access_key => ENV['AWS_SECRET_ACCESS_KEY']
+    })
   end
 
   def self.perform(key)
