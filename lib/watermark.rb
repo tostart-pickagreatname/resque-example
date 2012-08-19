@@ -15,8 +15,7 @@ class Watermark
     @watermarked_directory = connection.directories.get(ENV['AWS_S3_BUCKET_WATERMARKED'])
 
     @original_file = @originals_directory.files.get(key)
-    puts "Initialized Watermark worker instance"
-    $stdout.flush
+    flush "Initialized Watermark worker instance"
   end
 
   def self.perform(key)
@@ -27,8 +26,7 @@ class Watermark
     Dir.mktmpdir do |tmpdir|
       tmpfile = File.join(tmpdir, @original_file.key)
 
-      puts "Opening original file locally: #{tmpfile}"
-      $stdout.flush
+      flush "Opening original file locally: #{tmpfile}"
       File.open(tmpfile, 'w') { |f| f.write(@original_file.body) }
       image = MiniMagick::Image.open(tmpfile)
 
@@ -39,8 +37,7 @@ class Watermark
 
       watermarked_local_file = "#{tmpdir}/watermarked_#{@original_file.key}"
       result.write(watermarked_local_file)
-      puts "Writing watermarked file locally: #{watermarked_local_file}"
-      $stdout.flush
+      flush "Writing watermarked file locally: #{watermarked_local_file}"
 
       save_watermarked_file(watermarked_local_file)
       redis.incr s3_watermarked_key
@@ -54,6 +51,10 @@ class Watermark
       :public => true
     )
     puts "Persisting watermarked file to S3: #{watermarked_file_token.public_url}"
+  end
+
+  def flush(str)
+    puts str
     $stdout.flush
   end
 end
