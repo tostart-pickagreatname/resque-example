@@ -1,3 +1,5 @@
+require File.expand_path('../redis_keys', __FILE__)
+
 class Watermark
   attr_reader :originals_directory, :watermarked_directory, :connection, :original_file
   @queue = :watermark
@@ -41,6 +43,7 @@ class Watermark
       $stdout.flush
 
       save_watermarked_file(watermarked_local_file)
+      redis.incr s3_watermarked_key
     end 
   end
 

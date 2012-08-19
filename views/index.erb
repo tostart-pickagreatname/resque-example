@@ -1,0 +1,14 @@
+<meta http-equiv="Refresh" content="3">
+<h1><a href="/resque">Resque Dashboard</a></h1>
+<h1><%= @local_uploads %> local uploads, <%= @s3_originals %> S3 originals, <%= @s3_watermarked %> watermarked.</h1>
+
+<% unless @working.length == 0 %>
+  <h2>Watermarking in progress...</h2>
+<% end %>
+
+<h2>Recently watermarked images</h2>
+<ul>
+  <% @watermarked_urls.each do |url| %>
+    <li><a href="<%= url %>"><%= url %></a></li>
+  <% end %>
+</ul>
