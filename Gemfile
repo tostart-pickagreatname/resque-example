@@ -2,7 +2,7 @@ source :rubygems
 
 gem 'rake'
 gem 'sinatra'
-gem 'resque'
+gem 'resque', ">= 1.22.0"
 gem 'fog'
 gem 'mini_magick'
 gem 'thin'
