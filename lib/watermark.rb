@@ -1,4 +1,5 @@
 require File.expand_path('../redis_keys', __FILE__)
+require 'resque/errors'
 
 module RetriedJob
   def on_failure_retry(e, *args)
@@ -33,6 +34,8 @@ class Watermark
 
   def self.perform(key)
     (new key).apply_watermark
+  rescue Resque::TermException
+    Resque.enqueue(self, key)
   end
 
   def apply_watermark
