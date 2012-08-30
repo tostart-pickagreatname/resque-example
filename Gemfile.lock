@@ -80,7 +80,7 @@ DEPENDENCIES
   pry
   rack-test
   rake
-  resque (>= 1.22.0)
+  resque (~> 1.22.0)
   rspec
   sinatra
   sinatra-redis
