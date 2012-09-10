@@ -1,6 +1,8 @@
 require File.expand_path('../redis_keys', __FILE__)
 require 'resque/errors'
 
+STDOUT.sync = true
+
 module RetriedJob
   def on_failure_retry(e, *args)
     puts "Performing #{self} caused an exception (#{e}). Retrying..."
@@ -33,9 +35,17 @@ class Watermark
   end
 
   def self.perform(key)
-    (new key).apply_watermark
-  rescue Resque::TermException
-    Resque.enqueue(self, key)
+    # (new key).apply_watermark
+    begin
+      puts "Processing job"
+      sleep(4)
+      puts "Job processed"
+    rescue Exception => e
+      # Resque.enqueue(self, key)
+      puts e
+      puts e.message
+      puts e.backtrace.join("\n")
+    end
   end
 
   def apply_watermark

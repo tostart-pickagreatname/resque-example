@@ -30,6 +30,13 @@ post '/upload' do
   end
 end
 
+get '/enqueue' do
+  10.times do
+    Resque.enqueue(Watermark, '123')
+  end
+  "Enqueued 10 jobs"
+end
+
 def send_to_s3(tmpfile, name)
   connection = Fog::Storage.new({
     :provider => 'AWS',
