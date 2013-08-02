@@ -9,6 +9,10 @@ Redis Installation (OS X)
 ----------------------------------------
     brew install redis
 
+ImageMagick Installation (OS X)
+----------------------------------------
+    brew install imagemagick
+
 Setup the app
 ----------------------------------------
     bundle install
