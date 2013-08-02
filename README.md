@@ -33,5 +33,5 @@ Set up a heroku app
 ----------------------------------------
     heroku create --stack cedar
     heroku addons:add redistogo:nano
-    git push heroku
+    git push heroku master
     heroku scale web=1 resque=1
