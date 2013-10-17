@@ -32,6 +32,6 @@ Start up the app locally
 Set up a heroku app
 ----------------------------------------
     heroku create --stack cedar
-    heroku addons:add redistogo:nano
+    heroku addons:add rediscloud
     git push heroku master
     heroku scale web=1 resque=1
