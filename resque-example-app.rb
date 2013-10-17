@@ -5,7 +5,7 @@ require File.expand_path('../lib/redis_keys', __FILE__)
 require 'sinatra/redis'
 
 configure do
-  uri = URI.parse(ENV["REDISTOGO_URL"])
+  uri = URI.parse(ENV["REDISCLOUD_URL"] || ENV["OPENREDIS_URL"] || ENV["REDISGREEN_URL"] || ENV["REDISTOGO_URL"])
   Resque.redis = Redis.new(:host => uri.host, :port => uri.port, :password => uri.password)
   Resque.redis.namespace = "resque:example"
   set :redis, ENV["REDISTOGO_URL"]
