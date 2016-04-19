@@ -7,6 +7,7 @@ gem 'fog'
 gem 'mini_magick'
 gem 'thin'
 gem 'sinatra-redis'
+gem 'mime-types'
 
 group :development, :test do
   gem 'pry'

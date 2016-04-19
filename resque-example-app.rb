@@ -31,6 +31,10 @@ post '/upload' do
   end
 end
 
+get '/not_upload' do
+  Resque.enqueue(NotWatermark)
+end
+
 def send_to_s3(tmpfile, name)
   connection = Fog::Storage.new({
     :provider => 'AWS',

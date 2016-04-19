@@ -57,7 +57,7 @@ class Watermark
 
       save_watermarked_file(watermarked_local_file)
       redis.incr s3_watermarked_key
-    end 
+    end
   end
 
   def save_watermarked_file(watermarked_local_file)
@@ -73,5 +73,15 @@ class Watermark
   def flush(str)
     puts str
     $stdout.flush
+  end
+end
+
+class NotWatermark
+  extend RetriedJob
+
+  @queue = :not_watermark
+
+  def self.perform
+    puts 'THERE IT IS'
   end
 end
