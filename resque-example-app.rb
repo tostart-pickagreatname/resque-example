@@ -32,7 +32,16 @@ post '/upload' do
 end
 
 get '/not_upload' do
-  Resque.enqueue(NotWatermark)
+  # we want to change this so that it makes the thing that we want.
+  # Resque.enqueue(Whatever)
+  # this allows me to specify the queue manually, what about the class variable
+  # Resque.enqueue_to(:some_queue, Whatever)
+
+  # we see the below working:
+  # 1461092419.664375 [0 [::1]:60275] "rpush" "resque:example:queue:some_queue" "{\"class\":\"ClassNameDude\",\"args\":[]}"
+  # "rpush" "resque:example:queue:some_queue" "{\"class\":\"ClassNameDude\",\"args\":[]}"
+  # "rpush" "resque:example:queue:some_queue" "{\"class\":\"Whatever\",\"args\":[]}"
+  Resque.push(:my_some_queue, class: 'NotWatermark', args: [])
 end
 
 def send_to_s3(tmpfile, name)
@@ -50,4 +59,8 @@ def send_to_s3(tmpfile, name)
   )
   redis.incr s3_originals_key
   file_token
+end
+
+class Whatever
+  @queue = :not_watermark
 end
